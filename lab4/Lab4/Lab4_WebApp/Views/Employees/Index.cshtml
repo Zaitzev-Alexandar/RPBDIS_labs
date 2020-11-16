@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Employee>
+@{
+    ViewData["Title"] = "Table 'Employees'";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p align="center">
+    <table border="1">
+        <tr>
+            <td>Post</td>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Patronymic</td>
+            <td>EmploymentDate</td>
+        </tr>
+        @foreach (var genre in Model)
+        {
+            <tr>
+                <td>@genre.Post</td>
+                <td>@genre.Name</td>
+                <td>@genre.Surname</td>
+                <td>@genre.Patronymic</td>
+                <td>@genre.EmploymentDate</td>
+            </tr>
+        }
+    </table>
+</p>
