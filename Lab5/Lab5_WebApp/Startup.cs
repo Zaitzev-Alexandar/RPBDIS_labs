@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Lab5_WebApp.Data;
 using Lab5_WebApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Lab5_WebApp.Midelware;
+using Lab5_WebApp.Services;
 
 namespace Lab5_WebApp
 {
@@ -36,6 +38,8 @@ namespace Lab5_WebApp
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
+            services.AddTransient<CacheProvider>();
+            services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession();
 
@@ -62,12 +66,15 @@ namespace Lab5_WebApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseRoleInitializer();
 
             app.UseEndpoints(endpoints =>
             {

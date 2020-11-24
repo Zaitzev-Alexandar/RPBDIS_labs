@@ -8,9 +8,6 @@ namespace Lab5_WebApp.Models
     public class CarModel
     {
         public int CarModelId { get; set; }
-        /// <summary>
-        /// Марка авто-производителя
-        /// </summary>
         public string Name { get; set; }
         public string Description { get; set; }
         public int CarMarkId { get; set; }
