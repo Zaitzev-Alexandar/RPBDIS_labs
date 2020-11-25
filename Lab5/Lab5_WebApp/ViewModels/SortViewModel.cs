@@ -28,27 +28,27 @@ namespace Lab5_WebApp.ViewModels
         CarModelsNameDesc,
         CarModelsDescriptionDesc,
         //Cars
-        RegNumAsc,
-        VINcodeAsc,
-        EngineNumAsc,
-        PriceAsc,
-        RentalPriceAsc,
-        IssueDateAsc,
-        SpecsAsc,
-        TechnicalMaintenanceDateAsc,
-        SpecMarkAsc,
-        ReturnMarkAsc,
+        CarsRegNumAsc,
+        CarsVINcodeAsc,
+        CarsEngineNumAsc,
+        CarsPriceAsc,
+        CarsRentalPriceAsc,
+        CarsIssueDateAsc,
+        CarsSpecsAsc,
+        CarsTechnicalMaintenanceDateAsc,
+        CarsSpecMarkAsc,
+        CarsReturnMarkAsc,
 
-        RegNumDesc,
-        VINcodeDesc,
-        EngineNumDesc,
-        PriceDesc,
-        RentalPriceDesc,
-        IssueDateDesc,
-        SpecsDesc,
-        TechnicalMaintenanceDateDesc,
-        SpecMarkDesc,
-        ReturnMarkDesc
+        CarsRegNumDesc,
+        CarsVINcodeDesc,
+        CarsEngineNumDesc,
+        CarsPriceDesc,
+        CarsRentalPriceDesc,
+        CarsIssueDateDesc,
+        CarsSpecsDesc,
+        CarsTechnicalMaintenanceDateDesc,
+        CarsSpecMarkDesc,
+        CarsReturnMarkDesc
     }
 
     public class SortViewModel
@@ -106,56 +106,34 @@ namespace Lab5_WebApp.ViewModels
             CurrentState = state;
             //Cars
 
-            CarsRegNum = state == SortState.RegNumAsc ? SortState.RegNumDesc : SortState.RegNumAsc;
+            CarsRegNum = state == SortState.CarsRegNumAsc ? SortState.CarsRegNumDesc : SortState.CarsRegNumAsc;
             CurrentState = state;
 
-            CarsVINcode = state == SortState.VINcodeAsc ? SortState.VINcodeDesc : SortState.VINcodeAsc;
+            CarsVINcode = state == SortState.CarsVINcodeAsc ? SortState.CarsVINcodeDesc : SortState.CarsVINcodeAsc;
             CurrentState = state;
 
-            CarsEngineNum = state == SortState.EngineNumAsc ? SortState.EngineNumDesc : SortState.EngineNumAsc;
+            CarsEngineNum = state == SortState.CarsEngineNumAsc ? SortState.CarsEngineNumDesc : SortState.CarsEngineNumAsc;
             CurrentState = state;
 
-            CarsPrice = state == SortState.PriceAsc ? SortState.PriceDesc : SortState.PriceAsc;
+            CarsPrice = state == SortState.CarsPriceAsc ? SortState.CarsPriceDesc : SortState.CarsPriceAsc;
             CurrentState = state;
 
-            CarsRentalPrice = state == SortState.RentalPriceAsc ? SortState.RentalPriceDesc : SortState.RentalPriceAsc;
-            CurrentState = state;
-            /*
-              RegNumAsc,
-            VINcodeAsc,
-            EngineNumAsc,
-            PriceAsc,
-            RentalPriceAsc,
-            IssueDateAsc,
-            SpecsAsc,
-            TechnicalMaintenanceDateAsc,
-            SpecMarkAsc,
-            ReturnMarkAsc,
-
-            RegNumDesc,
-            VINcodeDesc,
-            EngineNumDesc,
-            PriceDesc,
-            RentalPriceDesc,
-            IssueDateDesc,
-            SpecsDesc,
-            TechnicalMaintenanceDateDesc,
-            SpecMarkDesc,
-            ReturnMarkDesc
-            */
-            CarsIssueDate = state == SortState.IssueDateAsc ? SortState.IssueDateDesc : SortState.IssueDateAsc;
+            CarsRentalPrice = state == SortState.CarsRentalPriceAsc ? SortState.CarsRentalPriceDesc : SortState.CarsRentalPriceAsc;
             CurrentState = state;
 
-            CarsSpecs = state == SortState.SpecsAsc ? SortState.SpecsDesc : SortState.SpecsAsc;
+            CarsIssueDate = state == SortState.CarsIssueDateAsc ? SortState.CarsIssueDateDesc : SortState.CarsIssueDateAsc;
             CurrentState = state;
 
-            CarsTechnicalMaintenanceDate = state == SortState.TechnicalMaintenanceDateAsc ? SortState.TechnicalMaintenanceDateDesc : SortState.TechnicalMaintenanceDateAsc;
+            CarsSpecs = state == SortState.CarsSpecsAsc ? SortState.CarsSpecsDesc : SortState.CarsSpecsAsc;
             CurrentState = state;
 
-            CarsSpecMark = state == SortState.SpecMarkAsc ? SortState.SpecMarkDesc : SortState.SpecMarkAsc;
+            CarsTechnicalMaintenanceDate = state == SortState.CarsTechnicalMaintenanceDateAsc ? SortState.CarsTechnicalMaintenanceDateDesc : SortState.CarsTechnicalMaintenanceDateAsc;
             CurrentState = state;
 
-            CarsReturnMark = state == SortState.ReturnMarkAsc ? SortState.ReturnMarkDesc : SortState.ReturnMarkAsc;
+            CarsSpecMark = state == SortState.CarsSpecMarkAsc ? SortState.CarsSpecMarkDesc : SortState.CarsSpecMarkAsc;
+            CurrentState = state;
+
+            CarsReturnMark = state == SortState.CarsReturnMarkAsc ? SortState.CarsReturnMarkDesc : SortState.CarsReturnMarkAsc;
             CurrentState = state;
         }
     }

@@ -16,7 +16,6 @@ namespace Lab5_WebApp.ViewModels.Entities
         public CarModel Entity { get; set; }
         [Display(Name = "CarMarks")]
         public IEnumerable<CarMark> SelectList { get; set; }
-        [Display(Name = "CarMarkName")]
         public string CarMarkName { get; set; }
         public PageViewModel PageViewModel { get; set; }
         public DeleteViewModel DeleteViewModel { get; set; }

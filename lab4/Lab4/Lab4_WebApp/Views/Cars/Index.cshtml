@@ -17,6 +17,8 @@
             <td>SpecMark</td>
             <td>Price</td>
             <td>RentalPrice</td>
+            <td>CarModelBrand</td>
+            <td>CarModelName</td>
         </tr>
         @foreach (var genre in Model)
         {
@@ -31,6 +33,8 @@
                 <td>@genre.SpecMark</td>
                 <td>@genre.Price</td>
                 <td>@genre.RentalPrice</td>
+                <td>@genre.CarModel.Brand</td>
+                <td>@genre.CarModel.Name</td>
             </tr>
         }
     </table>

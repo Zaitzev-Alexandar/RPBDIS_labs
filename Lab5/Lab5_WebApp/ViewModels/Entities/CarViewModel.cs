@@ -15,10 +15,12 @@ namespace Lab5_WebApp.ViewModels.Entities
         [Display(Name = "Car")]
         public Car Entity { get; set; }
         [Display(Name = "CarModels")]
-        public IEnumerable<CarModel> SelectList { get; set; }
+        public IEnumerable<CarModel> SelectList1 { get; set; }
+        [Display(Name = "Employees")]
+        public IEnumerable<Employee> SelectList2 { get; set; }
 
-        [Display(Name = "CarModelName")]
         public string CarModelName { get; set; }
+        public string EmplpoyeeName { get; set; }
         public PageViewModel PageViewModel { get; set; }
         public DeleteViewModel DeleteViewModel { get; set; }
         public SortViewModel SortViewModel { get; set; }

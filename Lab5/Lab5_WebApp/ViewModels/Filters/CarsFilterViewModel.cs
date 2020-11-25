@@ -8,7 +8,6 @@ namespace Lab5_WebApp.ViewModels.Filters
 {
     public class CarsFilterViewModel
     {
-        [Display(Name = "Car")]
         public int CarRegNum { get; set; } = default!;
         public string CarVINcode { get; set; } = null!;
         public int CarEngineNum { get; set; } = default!;

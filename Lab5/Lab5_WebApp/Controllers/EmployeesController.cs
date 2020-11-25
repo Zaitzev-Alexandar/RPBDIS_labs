@@ -170,13 +170,13 @@ namespace Lab5_WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(CarMarkViewModel model)
+        public async Task<IActionResult> Delete(EmployeeViewModel model)
         {
-            CarMark carMark = await db.CarMarks.FindAsync(model.Entity.CarMarkId);
-            if (carMark == null)
+            Employee employee = await db.Employees.FindAsync(model.Entity.EmployeeId);
+            if (employee == null)
                 return NotFound();
 
-            db.CarMarks.Remove(carMark);
+            db.Employees.Remove(employee);
             await db.SaveChangesAsync();
 
             cache.Clean();
