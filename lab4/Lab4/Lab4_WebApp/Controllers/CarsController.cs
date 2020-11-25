@@ -18,7 +18,7 @@ namespace Lab4_WebApp.Controllers
         [ResponseCache(CacheProfileName = "CacheProfile")]
         public IActionResult Index()
         {
-            return View(db.Cars.Include(s => s.CarModel).Take(20).ToList());
+            return View(db.Cars.Include(s => s.CarModel).Include(g => g.Employee).Take(20).ToList());
         }
     }
 }

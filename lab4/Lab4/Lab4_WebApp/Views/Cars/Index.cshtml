@@ -19,6 +19,8 @@
             <td>RentalPrice</td>
             <td>CarModelBrand</td>
             <td>CarModelName</td>
+            <td>EmployeePost</td>
+            <td>EmployeeName</td>
         </tr>
         @foreach (var genre in Model)
         {
@@ -35,6 +37,8 @@
                 <td>@genre.RentalPrice</td>
                 <td>@genre.CarModel.Brand</td>
                 <td>@genre.CarModel.Name</td>
+                <td>@genre.Employee.Post</td>
+                <td>@genre.Employee.Name</td>
             </tr>
         }
     </table>
