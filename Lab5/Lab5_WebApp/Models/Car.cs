@@ -12,9 +12,9 @@ namespace Lab5_WebApp.Models
         public int RegNum { get; set; }
         public string VINcode { get; set; }
         public int EngineNum { get; set; }
-        [Column(TypeName = "money")]
+        [Column(TypeName = "Price")]
         public decimal Price { get; set; }
-        [Column(TypeName = "money")]
+        [Column(TypeName = "RentalPrice")]
         public decimal RentalPrice { get; set; }
         public DateTime IssueDate { get; set; }
         public string Specs { get; set; }

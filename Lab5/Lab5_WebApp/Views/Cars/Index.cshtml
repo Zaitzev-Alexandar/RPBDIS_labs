@@ -1,6 +1,6 @@
 ﻿@model Lab5_WebApp.ViewModels.Entities.CarViewModel
 @{
-    ViewData["Title"] = "CarModels";
+    ViewData["Title"] = "Cars";
 }
 
 <div class="container w-100">
@@ -17,7 +17,7 @@
                 <input name="CarEngineNum" value="@Model.CarsFilterViewModel.CarEngineNum" type="number" />
 
                 <label asp-for="CarsFilterViewModel.CarIssueDate"></label>
-                <input name="CarIssueDate" value="@Model.CarsFilterViewModel.CarIssueDate" type="date" />
+                <input name="CarIssueDate" value="@Model.CarsFilterViewModel.CarIssueDate" type="datetime" />
 
                 <label asp-for="CarsFilterViewModel.CarPrice"></label>
                 <input name="CarPrice" value="@Model.CarsFilterViewModel.CarPrice" type="number" />
@@ -26,19 +26,7 @@
                 <input name="CarRegNum" value="@Model.CarsFilterViewModel.CarRegNum" type="number" />
 
                 <label asp-for="CarsFilterViewModel.CarRentalPrice"></label>
-                <input name="CarRentalPrice" value="@Model.CarsFilterViewModel.CarRentalPrice"type="number" />
-
-                <label asp-for="CarsFilterViewModel.CarReturnMark"></label>
-                <input name="CarReturnMark" value="@Model.CarsFilterViewModel.CarReturnMark" type="checkbox" />
-                 
-                <label asp-for="CarsFilterViewModel.CarSpecMark"></label>
-                <input name="CarSpecMark" value="@Model.CarsFilterViewModel.CarSpecMark" type="checkbox" />
-
-                <label asp-for="CarsFilterViewModel.CarSpecs"></label>
-                <input name="CarSpecs" value="@Model.CarsFilterViewModel.CarSpecs" />
-
-                <label asp-for="CarsFilterViewModel.CarTechnicalMaintenanceDate"></label>
-                <input name="CarTechnicalMaintenanceDate" value="@Model.CarsFilterViewModel.CarTechnicalMaintenanceDate" type="date"/>
+                <input name="CarRentalPrice" value="@Model.CarsFilterViewModel.CarRentalPrice"type="number" step="0.0001" />
 
                 <label asp-for="CarsFilterViewModel.CarVINcode"></label>
                 <input name="CarVINcode" value="@Model.CarsFilterViewModel.CarVINcode" />
@@ -87,16 +75,6 @@
                     </a>
                 </th>
                 <th class="w-25">
-                    <a asp-action="Index" asp-route-sortState="@Model.SortViewModel.CarsSpecs" asp-route-page="@Model.PageViewModel.CurrentPage" class="nav-link text-white">
-                        @Html.DisplayNameFor(e => e.Entity.Specs)
-                    </a>
-                </th>
-                <th class="w-25">
-                    <a asp-action="Index" asp-route-sortState="@Model.SortViewModel.CarsTechnicalMaintenanceDate" asp-route-page="@Model.PageViewModel.CurrentPage" class="nav-link text-white">
-                        @Html.DisplayNameFor(e => e.Entity.TechnicalMaintenanceDate)
-                    </a>
-                </th>
-                <th class="w-25">
                     <a asp-action="Index" asp-route-sortState="@Model.SortViewModel.CarsVINcode" asp-route-page="@Model.PageViewModel.CurrentPage" class="nav-link text-white">
                         @Html.DisplayNameFor(e => e.Entity.VINcode)
                     </a>
@@ -114,7 +92,6 @@
                         @Html.DisplayNameFor(e => e.Entity.Employee.Name)
                     </a>
                 </th>
-                <th class="w-25 align-middle">Modification</th>
             </tr>
         </thead>
 
@@ -129,14 +106,13 @@
                     <td>@entity.RentalPrice</td>
                     <td>@entity.ReturnMark</td>
                     <td>@entity.SpecMark</td>
-                    <td>@entity.Specs</td>
-                    <td>@entity.TechnicalMaintenanceDate</td>
                     <td>@entity.VINcode</td>
                     <td>@entity.CarModel.Name</td>
                     <td>@entity.Employee.Name</td>
                     <td class="text-center">
-                         <a asp-action="Edit" asp-route-id="@entity.CarModelId" asp-route-sortState="@Model.SortViewModel.CurrentState" asp-route-page="@Model.PageViewModel.CurrentPage" class="btn btn-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@entity.CarModelId" asp-route-sortState="@Model.SortViewModel.CurrentState" asp-route-page="@Model.PageViewModel.CurrentPage" class="btn btn-danger">Delete</a>
+                        <a asp-action="Details" asp-route-id="@entity.CarId" asp-route-sortState="@Model.SortViewModel.CurrentState" asp-route-page="@Model.PageViewModel.CurrentPage" class="btn btn-warning">Details</a>
+                        <a asp-action="Edit" asp-route-id="@entity.CarId" asp-route-sortState="@Model.SortViewModel.CurrentState" asp-route-page="@Model.PageViewModel.CurrentPage" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@entity.CarId" asp-route-sortState="@Model.SortViewModel.CurrentState" asp-route-page="@Model.PageViewModel.CurrentPage" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }

@@ -31,21 +31,21 @@ namespace Lab5_WebApp.Controllers
             cache = cacheProvider;
         }
 
-        public IActionResult Index(SortState sortState = SortState.CarsVINcodeAsc, int page = 1)
+        public IActionResult Index(SortState sortState, int page = 1)
         {
             CarsFilterViewModel filter = HttpContext.Session.Get<CarsFilterViewModel>(filterKey);
             if (filter == null)
             {
-                filter = new CarsFilterViewModel { CarEngineNum = default, CarIssueDate = default, CarPrice = default, CarRegNum = default, CarRentalPrice = default, CarReturnMark = default, CarSpecMark = default, CarSpecs = string.Empty, CarTechnicalMaintenanceDate = default, CarVINcode = string.Empty };
+                filter = new CarsFilterViewModel { CarEngineNum = default, CarIssueDate = default, CarPrice = default, CarRegNum = default, CarRentalPrice = default,CarVINcode = string.Empty };
                 HttpContext.Session.Set(filterKey, filter);
             }
 
-            string modelKey = $"{typeof(CarModel).Name}-{page}-{sortState}-{filter.CarEngineNum}-{filter.CarIssueDate}-{filter.CarPrice}-{filter.CarRegNum}-{filter.CarRentalPrice}-{filter.CarReturnMark}-{filter.CarSpecMark}-{filter.CarSpecs}-{filter.CarTechnicalMaintenanceDate}-{filter.CarTechnicalMaintenanceDate}-{filter.CarVINcode}";
+            string modelKey = $"{typeof(Car).Name}-{page}-{sortState}-{filter.CarEngineNum}-{filter.CarIssueDate}-{filter.CarPrice}-{filter.CarRegNum}-{filter.CarRentalPrice}-{filter.CarVINcode}";
             if (!cache.TryGetValue(modelKey, out CarViewModel model))
             {
                 model = new CarViewModel();
 
-                IQueryable<Car> cars = GetSortedEntities(sortState, filter.CarVINcode, filter.CarEngineNum, filter.CarPrice, filter.CarRentalPrice, filter.CarIssueDate, filter.CarSpecs, filter.CarTechnicalMaintenanceDate, filter.CarSpecMark, filter.CarReturnMark);
+                IQueryable<Car> cars = GetSortedEntities(sortState, filter.CarVINcode, filter.CarEngineNum, filter.CarPrice, filter.CarRentalPrice, filter.CarIssueDate, filter.CarRegNum);
 
                 int count = cars.Count();
                 int pageSize = 10;
@@ -60,6 +60,19 @@ namespace Lab5_WebApp.Controllers
 
             return View(model);
         }
+        public async Task<IActionResult> Details(int id, int page)
+        {
+            Car car = await db.Cars.Include(s => s.CarModel).Include(s => s.Employee).FirstOrDefaultAsync(s => s.CarId == id);
+            if (car == null)
+                return NotFound();
+
+            CarViewModel model = new CarViewModel();
+            model.Entity = car;
+            model.PageViewModel = new PageViewModel { CurrentPage = page };
+
+            return View(model);
+        }
+
 
         [HttpPost]
         public IActionResult Index(CarsFilterViewModel filterModel, int page)
@@ -72,10 +85,6 @@ namespace Lab5_WebApp.Controllers
                 filter.CarPrice = filterModel.CarPrice;
                 filter.CarRegNum = filterModel.CarRegNum;
                 filter.CarRentalPrice = filterModel.CarRentalPrice;
-                filter.CarReturnMark = filterModel.CarReturnMark;
-                filter.CarSpecMark = filterModel.CarSpecMark;
-                filter.CarSpecs = filterModel.CarSpecs;
-                filter.CarTechnicalMaintenanceDate = filterModel.CarTechnicalMaintenanceDate;
                 filter.CarVINcode = filterModel.CarVINcode;
 
                 HttpContext.Session.Remove(filterKey);
@@ -265,10 +274,7 @@ namespace Lab5_WebApp.Controllers
          decimal carPrice,
          decimal carRentalPrice, 
          DateTime carIssueDate, 
-         string carSpecs, 
-         DateTime carTechnicalMaintenanceDate, 
-         bool carSpecMark, 
-         bool carReturnMark
+         int carRegNum
         )
         {
             IQueryable<Car> cars = db.Cars.Include(g => g.CarModel).Include(c => c.Employee).AsQueryable();
@@ -310,40 +316,38 @@ namespace Lab5_WebApp.Controllers
                     cars = cars.OrderByDescending(g => g.IssueDate);
                     break;
 
-                case SortState.CarsSpecsAsc:
-                    cars = cars.OrderBy(g => g.Specs);
+                case SortState.CarsRegNumAsc:
+                    cars = cars.OrderBy(g => g.RegNum);
                     break;
-                case SortState.CarsSpecsDesc:
-                    cars = cars.OrderByDescending(g => g.Specs);
-                    break;
-
-                case SortState.CarsTechnicalMaintenanceDateAsc:
-                    cars = cars.OrderBy(g => g.TechnicalMaintenanceDate);
-                    break;
-                case SortState.CarsTechnicalMaintenanceDateDesc:
-                    cars = cars.OrderByDescending(g => g.TechnicalMaintenanceDate);
+                case SortState.CarsRegNumDesc:
+                    cars = cars.OrderByDescending(g => g.RegNum);
                     break;
 
-                case SortState.CarsSpecMarkAsc:
-                    cars = cars.OrderBy(g => g.SpecMark);
-                    break;
-                case SortState.CarsSpecMarkDesc:
-                    cars = cars.OrderByDescending(g => g.SpecMark);
-                    break;
-
-                case SortState.CarsReturnMarkAsc:
-                    cars = cars.OrderBy(g => g.ReturnMark);
-                    break;
-                case SortState.CarsReturnMarkDesc:
-                    cars = cars.OrderByDescending(g => g.ReturnMark);
-                    break;
             }
-
+            
             if (!string.IsNullOrEmpty(carVINcode))
                 cars = cars.Where(g => g.VINcode.Contains(carVINcode)).AsQueryable();
-
-            if (!string.IsNullOrEmpty(carSpecs))
-                cars = cars.Where(g => g.Specs.Contains(carSpecs)).AsQueryable();
+            if (carEngineNum > 0)
+            {
+                cars = cars.Where(g => g.EngineNum == carEngineNum).AsQueryable();
+            }
+            if (carIssueDate != default)
+            {
+                cars = cars.Where(g => g.IssueDate.Date == carIssueDate.Date).AsQueryable();
+            }
+            if (carPrice > 0)
+            {
+                cars = cars.Where(g => g.Price >= (carPrice - 1) && g.Price <= (carPrice + 1)).AsQueryable();
+            }
+            if (carRegNum > 0)
+            {
+                cars = cars.Where(g => g.RegNum == carRegNum).AsQueryable();
+            }
+            if (carRentalPrice > 0)
+            {
+                cars = cars.Where(g => g.RentalPrice >= (carRentalPrice - 1) && g.RentalPrice <= (carRentalPrice + 1)).AsQueryable();
+            }
+        
             return cars;
         }
     }

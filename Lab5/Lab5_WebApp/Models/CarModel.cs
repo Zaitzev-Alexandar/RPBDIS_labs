@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lab5_WebApp.Models
 {
     public class CarModel
     {
         public int CarModelId { get; set; }
+        [Display(Name = "CarModelName")]
         public string Name { get; set; }
         public string Description { get; set; }
         public int CarMarkId { get; set; }

@@ -16,8 +16,6 @@
                 <label asp-for="CarModelsFilterViewModel.CarModelName"></label>
                 <input name="CarModelName" value="@Model.CarModelsFilterViewModel.CarModelName" />
                 
-                <label asp-for="CarModelsFilterViewModel.CarModelDescription"></label>
-                <input name="CarModelDescription" value="@Model.CarModelsFilterViewModel.CarModelDescription" />
 
                 <input type="submit" value="Filter" class="btn btn-primary" />
             </form>
@@ -32,11 +30,7 @@
                         @Html.DisplayNameFor(e => e.Entity.Name)
                     </a>
                 </th>
-                <th class="w-25">
-                    <a asp-action="Index" asp-route-sortState="@Model.SortViewModel.CarModelsDescriptionSort" asp-route-page="@Model.PageViewModel.CurrentPage" class="nav-link text-white">
-                        @Html.DisplayNameFor(e => e.Entity.Description)
-                    </a>
-                </th>
+
                 <th class="w-25">
                     <a asp-action="Index" asp-route-sortState="@Model.SortViewModel.CarMarkNameSort" asp-route-page="@Model.PageViewModel.CurrentPage" class="nav-link text-white">
                         @Html.DisplayNameFor(e => e.Entity.CarMark.Name)
@@ -51,7 +45,6 @@
             {
                 <tr>
                     <td>@entity.Name</td>
-                    <td>@entity.Description</td>
                     <td>@entity.CarMark.Name</td>
                     <td class="text-center">
                         <a asp-action="Details" asp-route-id="@entity.CarModelId" asp-route-sortState="@Model.SortViewModel.CurrentState" asp-route-page="@Model.PageViewModel.CurrentPage" class="btn btn-warning">Details</a>

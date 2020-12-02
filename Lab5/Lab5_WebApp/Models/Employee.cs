@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lab5_WebApp.Models
 {
@@ -9,6 +10,7 @@ namespace Lab5_WebApp.Models
     {
         public int EmployeeId { get; set; }
         public string Post { get; set; }
+        [Display(Name = "EmployeeName")]
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }
