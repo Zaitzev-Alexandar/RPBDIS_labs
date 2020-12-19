@@ -7,6 +7,7 @@
     <form method="post">
         <div>
             <input hidden asp-for="PageViewModel.CurrentPage" value="@Model.PageViewModel.CurrentPage" />
+            <input hidden asp-for="Entity.CarId" value="@Model.Entity.CarId" />
             <input hidden asp-for="Entity.CarModelId" value="@Model.Entity.CarModelId" />
             <input hidden asp-for="Entity.EmployeeId" value="@Model.Entity.EmployeeId" />
         </div>
@@ -19,6 +20,11 @@
             <label asp-for="Entity.VINcode"></label><br />
             <input asp-for="Entity.VINcode" class="w-75" />
         <p><span asp-validation-for="Entity.VINcode" class="text-danger"></span></p>
+
+        <p>
+            <label asp-for="Entity.RegNum"></label><br />
+            <input asp-for="Entity.RegNum" class="w-75" />
+        <p><span asp-validation-for="Entity.RegNum" class="text-danger"></span></p>
 
         <p>
             <label asp-for="Entity.EngineNum"></label><br />

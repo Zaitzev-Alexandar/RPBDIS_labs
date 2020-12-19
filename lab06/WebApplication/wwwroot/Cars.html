@@ -1,0 +1,354 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cars</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h2 class="text-center">Table "Cars"</h2>
+
+    <form name="carForm">
+        <input type="hidden" id="idIn" name="idIn" value=0 />
+        <div class="form-group">
+            <label Добавить>RegNum:</label>
+            <input type="number" id="regNumIn" name="regNumIn" />
+
+            <label Добавить>EngineNum:</label>
+            <input type="number" id="engineNumIn" name="engineNumIn" />
+
+            <label Добавить>Price:</label>
+            <input type="number" id="priceIn" name="priceIn" />
+
+            <label Добавить>RentalPrice:</label>
+            <input type="number" id="rentalPriceIn" name="rentalPriceIn" />
+
+            <label Добавить>VINCode:</label>
+            <input id="vinCodeIn" name="vinCodeIn" />
+
+            <label Добавить>IssueDate:</label>
+            <input type="date" id="issueDateIn" name="issueDateIn" />
+            
+            <label Добавить>TechnicalMaintenanceDate:</label>
+            <input type="date" id="technicalMaintenanceDateIn" name="technicalMaintenanceDateIn" />
+
+        </div>
+        <div class="form-group">
+
+            <label Добавить>SpecMark:</label>
+            <select type="checkbox" id="specMarkIn" name="specMarkIn">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+            
+            <label Добавить>ReturnMark:</label>
+            <select type="checkbox" id="returnMarkIn" name="returnMarkIn">
+                <option value="true">true</option>
+                <option value="false">false</option>
+            </select>
+            <label Добавить>Employee:</label>
+            <select id="employeeIn" name="employeeIn">
+            </select>
+
+            <label Добавить>CarModel:</label>
+            <select id="carModelIn" name="carModelIn">
+            </select>
+
+            <label Добавить>Specs:</label>
+            <input id="specsIn" name="specsIn" />
+
+            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+            <a id="reset" onclick="reset()" class="btn btn-primary text-white">Reset</a>
+        </div>
+    </form>
+
+    <table class="table table-striped text-break">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>RegNum</th>
+                <th>EngineNum</th>
+                <th>Price</th>
+                <th>RentalPrice</th>
+                <th>VINcode</th>
+                <th>IssueDate</th>
+                <th>TechnicalMaintenanceDate</th>
+                <th>SpecMark</th>
+                <th>ReturnMark</th>
+                <th>Employee</th>
+                <th>CarModel</th>
+                <th>Specs</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+        async function GetCars() {
+            const response = await fetch("/api/cars", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+
+            if (response.ok == true) {
+                const cars = await response.json();
+                let rows = document.querySelector("tbody");
+                cars.forEach(s => {
+                    rows.append(row(s));
+                });
+            }
+        }
+
+        async function GetCar(id) {
+            const response = await fetch("/api/cars/" + id, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const car = await response.json();
+                const form = document.forms["carForm"];
+                form.elements["idIn"].value = car.id;
+                form.elements["regNumIn"].value = car.regNum;
+                form.elements["engineNumIn"].value = car.engineNum;
+                form.elements["priceIn"].value = car.price;
+                form.elements["rentalPriceIn"].value = car.rentalPrice;
+                form.elements["vinCodeIn"].value = car.viNcode;
+                form.elements["issueDateIn"].value = car.issueDate.substring(0,10);
+                form.elements["technicalMaintenanceDateIn"].value = car.technicalMaintenanceDate.substring(0, 10);
+                form.elements["specMarkIn"].value = car.specMark;
+                form.elements["returnMarkIn"].value = car.returnMark;
+                form.elements["carModelIn"].selectedIndex = car.carModelId - 1;
+                form.elements["employeeIn"].selectedIndex = car.employeeId - 1;
+                form.elements["specsIn"].value = car.specs;
+                
+            }
+        }
+
+        async function CreateUser(carId, carRegNum, carEngineNum, carPrice, carRentalPrice, carVINcode, carIssueDate, carTechnicalMaintenanceDate, carSpecMark, carReturnMark,  carEmployeeId, carCarModelId, carSpecs) {
+            const response = await fetch("api/cars", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: parseInt(carId, 10),
+                    regNum: parseInt(carRegNum,10),
+                    engineNum: parseInt(carEngineNum, 10),
+                    price: parseFloat(carPrice),
+                    rentalPrice: parseFloat(carRentalPrice),
+                    vinCode: carVINcode,
+                    issueDate: carIssueDate,
+                    technicalMaintenanceDate: carTechnicalMaintenanceDate,
+                    specMark: carSpecMark,
+                    returnMark: carReturnMark,
+                    employeeId: parseInt(carEmployeeId, 10),
+                    carModelId: parseInt(carCarModelId, 10),
+                    specs: carSpecs
+                    
+                })
+            });
+            if (response.ok === true) {
+                const user = await response.json();
+                reset();
+                document.querySelector("tbody").append(row(user));
+            }
+        }
+
+        async function EditUser(carId, carRegNum, carEngineNum, carPrice, carRentalPrice, carVINcode, carIssueDate, carTechnicalMaintenanceDate, carSpecMark, carReturnMark, carEmployeeId, carCarModelId, carSpecs) {
+            const response = await fetch("/api/cars", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: parseInt(carId, 10),
+                    regNum: parseInt(carRegNum, 10),
+                    engineNum: parseInt(carEngineNum, 10),
+                    price: parseFloat(carPrice),
+                    rentalPrice: parseFloat(carRentalPrice),
+                    vinCode: carVINcode,
+                    issueDate: carIssueDate,
+                    technicalMaintenanceDate: carTechnicalMaintenanceDate,
+                    specMark: JSON.parse(carSpecMark),
+                    returnMark: JSON.parse(carReturnMark),
+                    employeeId: parseInt(carEmployeeId, 10),
+                    carModelId: parseInt(carCarModelId, 10),
+                    specs: carSpecs
+                })
+            });
+            if (response.ok === true) {
+                const car = await response.json();
+                reset();
+                document.querySelector("tr[data-rowid='" + car.id + "']").replaceWith(row(car));
+            }
+        }
+
+        async function DeleteCar(id) {
+            const response = await fetch("/api/cars/" + id, {
+                method: "DELETE",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const car = await response.json();
+                document.querySelector("tr[data-rowid='" + car.id + "']").remove();
+            }
+        }
+
+        function row(car) {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", car.id);
+
+            const idTd = document.createElement("td");
+            idTd.append(car.id);
+            tr.append(idTd);
+
+            const regNumTd = document.createElement("td");
+            regNumTd.append(car.regNum);
+            tr.append(regNumTd);
+
+            const engineNumTd = document.createElement("td");
+            engineNumTd.append(car.engineNum);
+            tr.append(engineNumTd);
+
+            const priceTd = document.createElement("td");
+            priceTd.append(car.price);
+            tr.append(priceTd);
+
+            const rentalPriceTd = document.createElement("td");
+            rentalPriceTd.append(car.rentalPrice);
+            tr.append(rentalPriceTd);
+
+            const vinCodeTd = document.createElement("td");
+            vinCodeTd.append(car.viNcode);
+            tr.append(vinCodeTd);
+
+            const issueDateTd = document.createElement("td");
+            issueDateTd.append(car.issueDate.substring(0, 10));
+            tr.append(issueDateTd);
+
+            const technicalMaintenanceDateTd = document.createElement("td");
+            technicalMaintenanceDateTd.append(car.technicalMaintenanceDate.substring(0, 10));
+            tr.append(technicalMaintenanceDateTd);
+
+            const specMarkTd = document.createElement("td");
+            specMarkTd.append(car.specMark);
+            tr.append(specMarkTd);
+
+            const returnMarkTd = document.createElement("td");
+            returnMarkTd.append(car.returnMark);
+            tr.append(returnMarkTd);
+
+            const employeeTd = document.createElement("td");
+            employeeTd.append(car.employeeId);
+            tr.append(employeeTd);
+
+            const carModelTd = document.createElement("td");
+            carModelTd.append(car.carModelId);
+            tr.append(carModelTd);
+
+            const specsTd = document.createElement("td");
+            specsTd.append(car.specs);
+            tr.append(specsTd);
+
+
+
+            const linksTd = document.createElement("td");
+
+            const editLink = document.createElement("a");
+            editLink.setAttribute("data-id", car.id);
+            editLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            editLink.append("Change");
+            editLink.addEventListener("click", e => {
+                e.preventDefault();
+                GetCar(car.id);
+            });
+            linksTd.append(editLink);
+
+            const removeLink = document.createElement("a");
+            removeLink.setAttribute("data-id", car.id);
+            removeLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            removeLink.append("Delete");
+            removeLink.addEventListener("click", e => {
+                e.preventDefault();
+                DeleteCar(car.id);
+            });
+
+            linksTd.append(removeLink);
+            tr.appendChild(linksTd);
+
+            return tr;
+        }
+
+        function reset() {
+            const form = document.forms["carForm"];
+            form.reset();
+            form.elements["idIn"].value = 0;
+        }
+
+        document.getElementById("reset").click(function (e) {
+            e.preventDefault();
+            reset();
+        })
+
+        document.forms["carForm"].addEventListener("submit", e => {
+            e.preventDefault();
+            const form = document.forms["carForm"];
+            const id = form.elements["idIn"].value;
+            const regNum = form.elements["regNumIn"].value;
+            const engineNum = form.elements["engineNumIn"].value;
+            const price = form.elements["priceIn"].value;
+            const rentalPrice = form.elements["rentalPriceIn"].value;
+            const vinCode = form.elements["vinCodeIn"].value;
+            const issueDate = form.elements["issueDateIn"].value;
+            const technicalMaintenanceDate = form.elements["technicalMaintenanceDateIn"].value;
+
+            const specMark = form.elements["specMarkIn"].value;
+            const returnMark = form.elements["returnMarkIn"].value;
+
+
+            const employeeId = form.elements["employeeIn"].selectedIndex;
+            const carModelId = form.elements["carModelIn"].selectedIndex;
+            const specs = form.elements["specsIn"].value;
+            if (id == 0)
+                CreateUser(id, regNum, engineNum, price, rentalPrice, vinCode, issueDate, technicalMaintenanceDate, specMark, returnMark, employeeId, carModelId, specs);
+            else
+                EditUser(id, regNum, engineNum, price, rentalPrice, vinCode, issueDate, technicalMaintenanceDate, specMark, returnMark, employeeId, carModelId, specs);
+
+        });
+
+        async function GetEmployees() {
+            const response = await fetch("/api/cars/employees", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok == true) {
+                const employees = await response.json();
+                let select = document.getElementById("employeeIn");
+                var i = 0;
+                employees.forEach(g => {
+                    select.options[i] = new Option(g.name, g.employeeId);
+                    i += 1;
+                })
+            }
+        }
+
+        async function GetCarModels() {
+            const response = await fetch("/api/cars/carModels", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok == true) {
+                const carModels = await response.json();
+                let select = document.getElementById("carModelIn");
+                var i = 0;
+                carModels.forEach(g => {
+                    select.options[i] = new Option(g.name, g.carModelId);
+                    i += 1;
+                })
+            }
+        }
+
+
+        GetCars();
+        GetEmployees();
+        GetCarModels();
+    </script>
+</body>
+</html>
